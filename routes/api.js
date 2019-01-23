@@ -1,10 +1,12 @@
 'use strict';
 
-var expect = require('chai').expect;
-var MongoClient = require('mongodb');
-var ObjectId = require('mongodb').ObjectID;
+const expect = require('chai').expect;
+const MongoClient = require('mongodb');
+const ObjectId = require('mongodb').ObjectID;
+const issues = require('../controller/issue-handler').IssueHandler;
+const projects = require('../controller/project-handler').ProjectHandler;
 
-const CONNECTION_STRING = process.env.DB; //MongoClient.connect(CONNECTION_STRING, function(err, db) {});
+const CONNECTION_STRING = process.env.MONGO; //MongoClient.connect(CONNECTION_STRING, function(err, db) {});
 
 module.exports = function (app) {
   MongoClient.connect(process.env.MONGO, (err)=>{
@@ -17,25 +19,19 @@ module.exports = function (app) {
 
   app.route('/api/issues/:project')
   
-    .get(function (req, res){
-      var project = req.params;
-      console.log(project);
-      
-    })
+    .get(issues.getIssues)
     
-    .post(function (req, res){
-      var project = req.params.project;
-      
-    })
+    .post(issues, issues.postIssues)
     
-    .put(function (req, res){
-      var project = req.params.project;
-      
-    })
+    .put(issues.putIssues)
     
-    .delete(function (req, res){
-      var project = req.params.project;
-      
-    });
-    
+    .delete(issues.deleteIssues); 
+  
+  app.route('/api/projects')
+    .get(projects.getAllProjects)
+    .post(projects.postProject)
+  
+  app.route('/api/projects/:project')
+    .get(projects.getOneProject)
+    .delete(projects.deleteProject)
 };
