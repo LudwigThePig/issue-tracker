@@ -1,9 +1,9 @@
-const Project = require('../models/project.js');
-const Issue = require('../models/issue.js');
-
 function IssueHandler(){
+  const Project = require('../models/project.js');
+  const Issue = require('../models/issue.js');
+  
   this.getIssues = function(req, res){
-    console.log('made it')
+    console.log('we made it');
   };
   //gets all the current issues
   

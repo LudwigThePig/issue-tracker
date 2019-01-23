@@ -3,8 +3,11 @@
 const expect = require('chai').expect;
 const MongoClient = require('mongodb');
 const ObjectId = require('mongodb').ObjectID;
-const issues = require('../controller/issue-handler').IssueHandler;
-const projects = require('../controller/project-handler').ProjectHandler;
+const Issues = require('../controller/issue-handler.js');
+const Projects = require('../controller/project-handler.js');
+
+const issues = new Issues;
+const projects = new Projects;
 
 const CONNECTION_STRING = process.env.MONGO; //MongoClient.connect(CONNECTION_STRING, function(err, db) {});
 
@@ -21,7 +24,7 @@ module.exports = function (app) {
   
     .get(issues.getIssues)
     
-    .post(issues, issues.postIssues)
+    .post(issues.postIssues)
     
     .put(issues.putIssues)
     
