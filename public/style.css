@@ -1,18 +1,40 @@
+body{  
+	font-family: Arial,Helvetica Neue,Helvetica,sans-serif; 
+  margin: 0px;
+  padding: 0px;
+  color: white;
+  text-align: center;
+}
+
 * {
   margin: 0px;
   padding: 0px;
+}
+#header{
+background: #343434;
+  color: white;
+  padding: 10px;
+  margin: 0;
 }
 
 body {
   padding: 10px;
 }
 
-.issue {
-  margin: 20px;
-  padding: 5px;
-  width: 60%;
-  border: 2px solid black;
+#testui{
+  background: #111;
+  width: 100vw;
+  margin: auto
 }
+
+form{
+  background: #df7500;
+  width: 40vw;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 10px;
+}
+
 
 .closed {
   background-color: lightgrey;
