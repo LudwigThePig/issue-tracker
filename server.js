@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const expect = require('chai').expect;
 const cors = require('cors');
 const helmet = require('helmet');
-const MongoClient = require('mongodb');
+const mongoose = require('mongoose');
 
 const apiRoutes = require('./routes/api.js');
 const fccTestingRoutes = require('./routes/fcctesting.js');
@@ -13,7 +13,7 @@ const runner = require('./test-runner');
 
 const app = express();
 
-  MongoClient.connect(process.env.MONGO, (err)=>{
+  mongoose.connect(process.env.MONGO, (err)=>{
     if (err){
       console.log(`Ooops, looks like something went wrong: ${err}`);
     } else { 
