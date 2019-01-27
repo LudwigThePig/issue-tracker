@@ -8,7 +8,7 @@
           return res.json();
         })
         .then(res => {
-          this.list = res.projects.map(project => [project.project_name, project._id]);
+          this.list = res.projects.map(project => [project.projectName, project._id]);
           return;
         })
         .catch(function(err) {
@@ -16,13 +16,12 @@
         });
     },
     addProject: function(projectName){
-      const options = {
+      
+      return fetch('/api/projects', {
         method: 'POST',
         body: JSON.stringify({projectName}),
         headers: {'Content-Type': 'application/json'}
-      };
-      
-      return fetch('/api/projects', options)
+      })
         .then((data) => {return data.json()})
         .then((res)=>{
             this.list.push([projectName, res._id])
@@ -34,26 +33,26 @@
     }
     
   };//end projects  
-  console.log(projects.list);
   
   const dom = {
     init: function(){
       //Rendering
-      let project;
-      for (project in projects.list){
+      for (let i = 0; i < projects.list.length; i++){
+        console.log(projects.list);
         const linkWrapper = document.createElement('a');
         const projDiv = document.createElement('div');
         const projTitle = document.createElement('h2');
         const issueCount = document.createElement('p');
 
-        linkWrapper.setAttribute('src', `issues/${project}`);
+        linkWrapper.setAttribute('href', `/issues/${projects.list[i][0]}`);
         projDiv.setAttribute('class', 'projectDiv');
-        projTitle.innerText = project;
+        projTitle.innerText = projects.list[i][0];
         // let count = (project.issues.length == undefined) ? 0 : project.issues.length;
         issueCount.innerText = `0 issues reported`;
-
+        
         projDiv.appendChild(projTitle);
         projDiv.appendChild(issueCount);
+        linkWrapper.appendChild(projDiv);
 
         document.getElementById('main').appendChild(linkWrapper);
       }
