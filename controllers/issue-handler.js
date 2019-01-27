@@ -3,7 +3,16 @@ function IssueHandler(){
   const Issue = require('../models/issue.js');
   
   this.getIssues = function(req, res){
-    console.log('we made it');
+    const project = req.params;
+    console.log(project);
+    Issue.find(project, function(err, data){
+      if (err){
+        console.log('We could not find these issues');
+      } else {
+        console.dir(res);
+        res.json(res);
+      }
+    })
   };
   //gets all the current issues
   
