@@ -32,9 +32,7 @@ function ProjectHandler(){
 //Will search for a matching project. If match is found, direct them to project. If none is found, it will add it to the database
   this.postProject = function(req, res){
     const projectName = req.body.projectName.toString();
-    console.log('line 35, projectName = ' + projectName);
     Project.findOne({projectName: projectName}, function(err, project){
-      console.log('line 37');
       if (err){console.log(err)};
       
       if (project){

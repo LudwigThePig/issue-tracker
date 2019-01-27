@@ -16,20 +16,20 @@
         });
     },
     addProject: function(projectName){
-      console.log(projectName);
-      return fetch('/api/projects',{
+      const options = {
         method: 'POST',
         body: JSON.stringify({projectName}),
-        headers:{'Content-Type': 'application/json'}
-      })
-        .then(data => {return data.json();})
+        headers: {'Content-Type': 'application/json'}
+      };
+      
+      return fetch('/api/projects', options)
+        .then((data) => {return data.json()})
         .then((res)=>{
             this.list.push([projectName, res._id])
-              console.log('made it this far');
 
             return res;
           })
-        .catch(err => {throw new Error('Failed to add project')});
+        .catch(err => {console.log(err)});
       
     }
     
@@ -38,7 +38,6 @@
   
   const dom = {
     init: function(){
-      
       //Rendering
       let project;
       for (project in projects.list){
@@ -50,7 +49,8 @@
         linkWrapper.setAttribute('src', `issues/${project}`);
         projDiv.setAttribute('class', 'projectDiv');
         projTitle.innerText = project;
-        issueCount.innerText = `${project.issues.length()} issues reported`;
+        // let count = (project.issues.length == undefined) ? 0 : project.issues.length;
+        issueCount.innerText = `0 issues reported`;
 
         projDiv.appendChild(projTitle);
         projDiv.appendChild(issueCount);
@@ -67,5 +67,8 @@
       });
     }
   }//end dom
-  dom.init();
+  projects.init();
+  //TODO: Find way to invoke this function after fetch
+  setTimeout(function(){dom.init();}, 2000);
+
 })()// end iife
