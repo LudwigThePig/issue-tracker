@@ -1,4 +1,4 @@
-const Project = require('../models/project.js');
+const Project = require('../models/project');
 
 function ProjectHandler(){
   
@@ -9,7 +9,7 @@ function ProjectHandler(){
         console.log(err);
       } else {
         res.json({projects: projects});
-        console.log('getAllProjects sent projects');
+        console.log(projects);
       }
     })
   };
@@ -31,28 +31,51 @@ function ProjectHandler(){
   
 //Will search for a matching project. If match is found, direct them to project. If none is found, it will add it to the database
   this.postProject = function(req, res){
-    const projName = req.body.projectName.toString();
-    Project.findOne({projName})
-      .exec((project) => {
-        if (project){
-          res.send('project already exists')
-        } else {
-          let proj = new Project(projName);
-          proj.save()
-            .exec( (err, x) => {
-              if (err){
-                res.send(err);
-              } else {
-                let response = {
-                  message: `${proj} created`,
-                  _id: x._id
-                }
-                res.json(response);
+    const projectName = req.body.projectName.toString();
+    console.log('line 35, projectName = ' + projectName);
+    Project.findOne({projectName: projectName}, function(err, project){
+      console.log('line 37');
+      if (err){console.log(err)};
+      
+      if (project){
+        res.json({message: 'that project already exists'});
+      } else {
+        let proj = new Project({projectName: projectName});
+        proj.save()
+          .then( (x) => {
+              let response = {
+                message: `${proj} created`,
+                _id: x._id
               }
+              console.log(response);
+              res.json(response);
           })
+    }})
+    
+//       .then(project => {
+//         if (project){
+//           res.json({message: 'that project already exists'});
+//         } else {
+//           let proj = new Project({projectName: projectName});
+//           console.log(proj);
+//           proj.save()
+//             .then( (x) => {
+//                 let response = {
+//                   message: `${proj} created`,
+//                   _id: x._id
+//                 }
+//                 console.log(response);
+//                 res.json(response);
+//             })
           
-        }
-      })
+//           .catch(err=>{
+//             console.log(err);
+//             res.send(err);
+//           })
+          
+//         }
+//       })
+      .catch(err => console.log(err));
   }
   
 //Will search for a matching project. If none found, return an error message. If found, delete and update page

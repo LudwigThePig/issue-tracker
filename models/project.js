@@ -12,6 +12,6 @@ const ProjectSchema = new Schema({
   issues: [Schema.Types.ObjectId]
 });
 
-const Project = mongoose.model('Project', Project);
+const Project = mongoose.model('Project', ProjectSchema);
 
 module.exports = Project;
