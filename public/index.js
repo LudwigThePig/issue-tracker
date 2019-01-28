@@ -44,7 +44,7 @@
         const projTitle = document.createElement('h2');
         const issueCount = document.createElement('p');
 
-        linkWrapper.setAttribute('href', `/issues/${projects.list[i][0]}`);
+        linkWrapper.setAttribute('href', `/api/issues/${projects.list[i][0]}`);
         projDiv.setAttribute('class', 'projectDiv');
         projTitle.innerText = projects.list[i][0];
         // let count = (project.issues.length == undefined) ? 0 : project.issues.length;

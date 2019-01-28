@@ -2,6 +2,8 @@ function IssueHandler(){
   const Project = require('../models/project.js');
   const Issue = require('../models/issue.js');
   
+  
+//gets all the current issues
   this.getIssues = function(req, res){
     const project = req.params;
     console.log(project);
@@ -9,12 +11,11 @@ function IssueHandler(){
       if (err){
         console.log('We could not find these issues');
       } else {
-        console.dir(res);
-        res.json(res);
+        console.dir('line 15 issues controller ' + data);
+        res.json(data);
       }
     })
   };
-  //gets all the current issues
   
   this.postIssues = function(req, res){
     res.send('we made it to controller/issue-handler postIssues')
