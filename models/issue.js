@@ -66,18 +66,22 @@
       const form = document.getElementById('submitIssue')
       const submitButton = document.getElementById('buttonPOST');
       let formInput = {
-        title: document.getElementsByName('issue_title')[0].value,
-        text: document.getElementsByName('issue_text')[0].value,
-        createdBy: document.getElementsByName('created_by')[0].value,
-        assignedTo: document.getElementsByName('assigned_to')[0].value,
-        statusText: document.getElementsByName('status_text')[0].value
+        title: document.getElementsByName('issue_title')[0],
+        text: document.getElementsByName('issue_text')[0],
+        createdBy: document.getElementsByName('created_by')[0],
+        assignedTo: document.getElementsByName('assigned_to')[0],
+        statusText: document.getElementsByName('status_text')[0]
       }
       document.querySelector('submitIssue');
       submitButton.addEventListener('click', (e)=>{
         e.preventDefault();
-        console.log(formInput);
+        console.log(formInput.value);
+        formInput.title.value = '';
+        formInput.text.value = '';
+        formInput.createdBy.value = '';
+        formInput.assignedTo.value = '';
+        formInput.statusText.value = '';
         // issues.addIssue(formInput.value);
-        formInput.value = '';
       });
     }
   }//end dom
