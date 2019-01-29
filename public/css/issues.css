@@ -31,10 +31,20 @@ background: #343434;
   box-shadow: 0px 0px 3px 3px;
 }
 
+#forms{
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+#forms div{
+    width: 30vw;
+}
+
 form{
   background: #df7500;
-  width: 40vw;
   margin: 0 auto;
-  padding: 20px;
+  padding: 10px;
   border-radius: 10px;
 }
