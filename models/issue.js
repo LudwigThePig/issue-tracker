@@ -1,57 +1,88 @@
-const mongoose = require('mongoose');
+(function(){
+  //fetch issues and store in list
+  let issues = {  
+    list: [],
+    init: function(){
+      return fetch('/api/issues')
+        .then(function(res) {
+        console.log(res);
+          return res.json();
+        })
+        .then(res => {
+        // issueTitle, description, name, assign, status, dateCreated, dateUpdated, open, project
 
-const Schema = mongoose.Schema;
+          this.list = res.issues.map(issue => [issue.projectName, issue._id]);
+          return;
+        })
+        .catch(function(err) {
+          throw new Error('oops something went wrong');
+        });
+    },
+    addIssue: function(projectName){
+      
+      return fetch('/api/issues', {
+        method: 'POST',
+        body: JSON.stringify({projectName}),
+        headers: {'Content-Type': 'application/json'}
+      })
+        .then((data) => {return data.json()})
+        .then((res)=>{
+            this.list.push([projectName, res._id])
 
-const IssueSchema = Schema({
-  issueTitle: {
-    type: String,
-    required: true,
-    min: 1,
-    max: 25
-  },
-  description: {
-    type: String,
-    required: true,
-    min: 1,
-    max: 280
-  },
-  name: {
-    type: String,
-    required: true,
-    min: 1,
-    max: 25
-  },
-  assign: {
-    type: String,
-    default: '',
-    max: 25
-  },
-  status: {
-    type: String,
-    default: '',
-    max: 25
-  },
-  dateCreated: {
-    type: String,
-    default: new Date(),
-    max: 25 
-  },
-  dateUpdated: {
-    type: String,
-    default: new Date()
-  },
-  open: {
-    type: Boolean,
-    required: true
-  },
-  project: {
-    type: String,
-    required: true,
-    min: 1,
-    max: 25
-  }
+            return res;
+          })
+        .catch(err => {console.log(err)});
+      
+    }
+    
+  };//end issues  
   
-});
+  const dom = {
+    init: function(){
+      //Rendering
+      for (let i = 0; i < issues.list.length; i++){
+        console.log(issues.list);
+        const linkWrapper = document.createElement('a');
+        const projDiv = document.createElement('div');
+        const projTitle = document.createElement('h2');
+        const issueCount = document.createElement('p');
 
-const Issue = mongoose.model('Issue'. IssueSchema);
-module.exports = Issue;
+        linkWrapper.setAttribute('href', `/${issues.list[i][0]}`);
+        projDiv.setAttribute('class', 'projectDiv');
+        projTitle.innerText = issues.list[i][0];
+        // let count = (project.issues.length == undefined) ? 0 : project.issues.length;
+        issueCount.innerText = `0 issues reported`;
+        
+        projDiv.appendChild(projTitle);
+        projDiv.appendChild(issueCount);
+        linkWrapper.appendChild(projDiv);
+
+        document.getElementById('issues').appendChild(linkWrapper);
+      }
+      
+    /* ********FORM HANDLING******** */
+      
+      //POST
+      const form = document.getElementById('submitIssue')
+      const submitButton = document.getElementById('buttonPOST');
+      let formInput = {
+        title: document.getElementsByName('issue_title')[0].value,
+        text: document.getElementsByName('issue_text')[0].value,
+        createdBy: document.getElementsByName('created_by')[0].value,
+        assignedTo: document.getElementsByName('assigned_to')[0].value,
+        statusText: document.getElementsByName('status_text')[0].value
+      }
+      document.querySelector('submitIssue');
+      submitButton.addEventListener('click', (e)=>{
+        e.preventDefault();
+        console.log(formInput);
+        // issues.addIssue(formInput.value);
+        formInput.value = '';
+      });
+    }
+  }//end dom
+  issues.init();
+  //TODO: Find way to invoke this function after fetch
+  setTimeout(function(){dom.init();}, 2000);
+
+})()// end iife
