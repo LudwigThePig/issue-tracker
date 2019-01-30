@@ -22,7 +22,7 @@
         
         return fetch('/api/issues', {
           method: 'POST',
-          body: JSON.stringify({issue}),
+          body: issue,
           headers: {'Content-Type': 'application/json'}
         })
           .then((data) => {return data.json()})
@@ -31,11 +31,12 @@
   
               return res;
             })
-          .catch(err => {console.log(err)});
+          .catch(err => {console.log(err + issue)});
         
       }
       
     };//end issues  
+    
     
     const dom = {
       init: function(){
@@ -75,21 +76,21 @@
         document.querySelector('submitIssue');
         submitButton.addEventListener('click', (e)=>{
           console.log(formInput.title.value + typeof(formInput.title.value))
-          e.preventDefault();        
+          e.preventDefault();                
+          const json = {
+              "issueTitle": formInput.title.value,
+              "description": formInput.description.value,
+              "name": formInput.createdBy.value,
+              "assign": formInput.assignedTo.value,
+              "status": formInput.statusText.value
+          };        
+          issues.addIssue(JSON.stringify(json));
+          
           formInput.title.value = '';
           formInput.description.value = '';
           formInput.createdBy.value = '';
           formInput.assignedTo.value = '';
           formInput.statusText.value = '';
-          
-          const json = {
-              "issueTitle": JSON.parse(formInput.title.value),
-              "description": JSON.parse(formInput.description),
-              "name": JSON.parse(formInput.createdBy.value),
-              "assign": JSON.parse(formInput.assignedTo.value),
-              "status": JSON.parse(formInput.statusText.value)
-          }        
-          issues.addIssue(json)
         });
       }
     }//end dom
