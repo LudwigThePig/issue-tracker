@@ -5,13 +5,12 @@ function IssueHandler(){
   
 //gets all the current issues
   this.getIssues = function(req, res){
-    const project = req.params;
-    console.log(project);
-    Issue.find(project, function(err, data){
+    const project = req.params.project;
+    console.dir(req.query);
+    Issue.find(req.query, function(err, data){
       if (err){
         console.log('We could not find these issues');
       } else {
-        console.dir('line 15 issues controller ' + data);
         res.json(data);
       }
     })

@@ -3,8 +3,7 @@
   //fetch issues and store in list
   let issues = {  
     list: [],
-    init: function(){
-        console.log(projName);
+    init: function(){ //Gets issues for the project
       return fetch(`/api/issues/${projName}`)
         .then(function(res) {
           return res.json();
@@ -12,11 +11,12 @@
         .then(res => {
         // issueTitle, description, name, assign, status, dateCreated, dateUpdated, open, project
 
-          this.list = res.issues.map(issue => [issue.projectName, issue._id]);
+          this.list = res; //.map(issue => [issue.projectName, issue._id]);
+          console.log(this.list);
           return;
         })
         .catch(function(err) {
-          throw new Error('oops something went wrong');
+          throw new Error('oops something went wrong' + err);
         });
     },
     addIssue: function(issue){
@@ -41,25 +41,59 @@
   
   const dom = {
     init: function(){
+      
+      /*
+      assign: "k"
+      dateCreated: "Thu Jan 31 2019 21:02:53 GMT+0000 (Coordinated Universal Time)"
+      dateUpdated: "Thu Jan 31 2019 21:02:53 GMT+0000 (Coordinated Universal Time)"
+      description: "k"
+      issueTitle: "k"
+      name: "k"
+      open: true
+      project: "okay"
+      status: "k"
+      __v: 0
+      _id: "5c53627da413512caa199645"
+      */
+      
       //Rendering
       for (let i = 0; i < issues.list.length; i++){
         console.log(issues.list);
-        const linkWrapper = document.createElement('a');
-        const projDiv = document.createElement('div');
-        const projTitle = document.createElement('h2');
-        const issueCount = document.createElement('p');
+        const issueDiv = document.createElement('div');
+        const name = document.createElement('h2');
+        const description = document.createElement('p');
+        const created = document.createElement('span');
+        const updated = document.createElement('span');
+        const status = document.createElement('span');
+        const open = document.createElement('open');
 
-        linkWrapper.setAttribute('href', `/${issues.list[i][0]}`);
-        projDiv.setAttribute('class', 'projectDiv');
-        projTitle.innerText = issues.list[i][0];
-        // let count = (project.issues.length == undefined) ? 0 : project.issues.length;
-        issueCount.innerText = `0 issues reported`;
+        issueDiv.setAttribute('class', 'projectDiv');
+        created.setAttribute('class', 'date');
+        updated.setAttribute('class', 'date');
+        status.setAttribute('class', 'status');
+        open.setAttribute('class', 'status');
         
-        projDiv.appendChild(projTitle);
-        projDiv.appendChild(issueCount);
-        linkWrapper.appendChild(projDiv);
+        name.innerText = issues.list[i].name;
+        description.innerText = issues.list[i].description;
+        created.innerText = issues.list[i].dateCreated.slice(0, 15);
+        updated.innerText = issues.list[i].dateUpdated.slice(0, 12);
+        
+        if (issues.list[i].open){
+          open.innerText = "Open";
+          open.setAttribute('style', 'color: red');
+        } else {
+          open.innerText = "Closed";
+          open.setAttribute('style', 'color: green');
+        }
+        
+        issueDiv.appendChild(name);
+        issueDiv.appendChild(description);
+        issueDiv.appendChild(created);
+        issueDiv.appendChild(updated);
+        issueDiv.appendChild(status);
+        issueDiv.appendChild(open);
 
-        document.getElementById('issues').appendChild(linkWrapper);
+        document.getElementById('issues').appendChild(issueDiv);
       }
       
     /* ********FORM HANDLING******** */
@@ -97,6 +131,6 @@
   }//end dom
   issues.init();
   //TODO: Find way to invoke this function after fetch
-  setTimeout(function(){dom.init();}, 2000);
+  setTimeout(function(){dom.init();}, 1000);
 
 })()// end iife
