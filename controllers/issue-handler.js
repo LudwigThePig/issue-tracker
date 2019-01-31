@@ -18,7 +18,29 @@ function IssueHandler(){
   };
   
   this.postIssues = function(req, res){
-    res.send('we made it to controller/issue-handler postIssues')
+    const projName = req.params.project.toString(); //this is the name, need __id?
+    const issue = new Issue({
+      "issueTitle": req.body.issueTitle,
+      "description": req.body.description,
+      "name": req.body.name,
+      "assign": req.body.assign,
+      "status": req.body.status,
+      "dateCreated": new Date(),
+      "dateUpdated": new Date(),
+      "open": true,
+      "project": projName
+    });
+    issue.save()
+      .then(function(data){
+        Project.findOneAndUpdate({projecName: projName}, { $push: {issue: data._id}})
+          .then(function(){
+            console.log(data);
+            res.json(data);
+          })
+          .catch( (err)=>{ console.log(err); });
+    })
+    .catch( (err)=>{ console.log(err); } );
+
   };
   //find the project. If project does not exist, prompt the user to create project. If project does exist, post to that project
   
