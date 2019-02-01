@@ -8,7 +8,7 @@
           return res.json();
         })
         .then(res => {
-          this.list = res.projects.map(project => [project.projectName, project._id]);
+          this.list = res.projects.map(project => [project.projectName, project._id, project.issues]);
           return;
         })
         .catch(function(err) {
@@ -38,17 +38,23 @@
     init: function(){
       //Rendering
       for (let i = 0; i < projects.list.length; i++){
-        console.log(projects.list);
         const linkWrapper = document.createElement('a');
         const projDiv = document.createElement('div');
         const projTitle = document.createElement('h2');
         const issueCount = document.createElement('p');
+        const id = document.createElement('span');
 
-        linkWrapper.setAttribute('href', `/api/issues/${projects.list[i][0]}`);
+        linkWrapper.setAttribute('href', `/${projects.list[i][0]}`);
         projDiv.setAttribute('class', 'projectDiv');
         projTitle.innerText = projects.list[i][0];
-        // let count = (project.issues.length == undefined) ? 0 : project.issues.length;
-        issueCount.innerText = `0 issues reported`;
+        let count;
+        console.log(projects.list[i][2])
+        if (projects.list[i][2] == []) {
+          count = 0;
+        } else {
+          count = projects.list[i][2].length;
+        }
+        issueCount.innerText = `${count} issues reported`;
         
         projDiv.appendChild(projTitle);
         projDiv.appendChild(issueCount);

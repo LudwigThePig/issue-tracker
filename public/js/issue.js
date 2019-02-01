@@ -11,7 +11,7 @@
         .then(res => {
         // issueTitle, description, name, assign, status, dateCreated, dateUpdated, open, project
 
-          this.list = res; //.map(issue => [issue.projectName, issue._id]);
+          this.list = res; 
           console.log(this.list);
           return;
         })
@@ -67,7 +67,7 @@
         const status = document.createElement('span');
         const open = document.createElement('open');
 
-        issueDiv.setAttribute('class', 'projectDiv');
+        issueDiv.setAttribute('class', 'issueDiv');
         created.setAttribute('class', 'date');
         updated.setAttribute('class', 'date');
         status.setAttribute('class', 'status');
