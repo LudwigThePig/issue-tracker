@@ -6,10 +6,9 @@ function IssueHandler(){
 //gets all the current issues
   this.getIssues = function(req, res){
     const project = req.params.project;
-    console.dir(req.query);
-    Issue.find(req.query, function(err, data){
+    Issue.find({project: project}, function(err, data){
       if (err){
-        console.log('We could not find these issues');
+        console.log(err);
       } else {
         res.json(data);
       }
@@ -31,9 +30,8 @@ function IssueHandler(){
     });
     issue.save()
       .then(function(data){
-        Project.findOneAndUpdate({projecName: projName}, { $push: {issue: data._id}})
+        Project.findOneAndUpdate({projectName: projName}, { $push: {issues: data._id}})
           .then(function(){
-            console.log(data);
             res.json(data);
           })
           .catch( (err)=>{ console.log(err); });

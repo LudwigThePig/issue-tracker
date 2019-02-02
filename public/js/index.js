@@ -46,15 +46,11 @@
 
         linkWrapper.setAttribute('href', `/${projects.list[i][0]}`);
         projDiv.setAttribute('class', 'projectDiv');
+        console.log(projects.list[i][2]);
         projTitle.innerText = projects.list[i][0];
-        let count;
-        console.log(projects.list[i][2])
-        if (projects.list[i][2] == []) {
-          count = 0;
-        } else {
-          count = projects.list[i][2].length;
-        }
-        issueCount.innerText = `${count} issues reported`;
+        
+        let count =  projects.list[i][2].length;       
+        issueCount.innerText = `issues: ${count}`;
         
         projDiv.appendChild(projTitle);
         projDiv.appendChild(issueCount);
