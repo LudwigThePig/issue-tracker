@@ -59,7 +59,8 @@
       for (let i = 0; i < issues.list.length; i++){
         console.log(issues.list);
         const issueDiv = document.createElement('div');
-        const name = document.createElement('h2');
+        const issueTitle = document.createElement('h2');
+        const author = document.createElement('p');
         const description = document.createElement('p');
         const created = document.createElement('span');
         const updated = document.createElement('span');
@@ -72,7 +73,8 @@
         status.setAttribute('class', 'status');
         open.setAttribute('class', 'status');
         
-        name.innerText = issues.list[i].name;
+        issueTitle.innerText = issues.list[i].issueTitle;
+        author.innerText = issues.list[i].name;
         description.innerText = issues.list[i].description;
         created.innerText = issues.list[i].dateCreated.slice(0, 15);
         updated.innerText = issues.list[i].dateUpdated.slice(0, 12);
@@ -85,8 +87,9 @@
           open.setAttribute('style', 'color: green');
         }
         
-        issueDiv.appendChild(name);
+        issueDiv.appendChild(issueTitle);
         issueDiv.appendChild(description);
+        issueDiv.appendChild(author);
         issueDiv.appendChild(created);
         issueDiv.appendChild(updated);
         issueDiv.appendChild(status);
@@ -125,6 +128,8 @@
         formInput.createdBy.value = '';
         formInput.assignedTo.value = '';
         formInput.statusText.value = '';
+        
+        location.reload();        
       });
     }
   }//end dom

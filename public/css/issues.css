@@ -11,11 +11,15 @@ body{
 }
 #header{
 background: #454851;
-  color: white;
   padding: 10px 0;
   margin: 0;
   height: 8vh;
+}
+
+#header a{
+  color: white;
   font-size: 1.2em;
+  text-decoration: none;
 }
 
 #issues{
@@ -25,13 +29,13 @@ background: #454851;
   color: #23232;
   
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   grid-gap: 10px;
 }
 
 .issueDiv{
   background: #343434;
-  width: 10vw;
+  width: 18vw;
 }
 .projectDiv:hover{
   box-shadow: 0px 0px 3px 3px;

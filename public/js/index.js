@@ -79,6 +79,7 @@
         e.preventDefault();
         projects.addProject(formPOST.formInput.value);
         formPOST.formInput.value = '';
+        location.reload();
       });
       
       //DELETE
@@ -91,6 +92,7 @@
         e.preventDefault();
         projects.deleteProject(formDELETE.formInput.value);
         formDELETE.formInput.value = '';
+        location.reload();
       });
     }
   }//end dom
