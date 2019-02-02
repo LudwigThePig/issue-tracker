@@ -9,7 +9,6 @@ function ProjectHandler(){
         console.log(err);
       } else {
         res.json({projects: projects});
-        console.log(projects);
       }
     })
   };
@@ -49,37 +48,13 @@ function ProjectHandler(){
               res.json(response);
           })
     }})
-    
-//       .then(project => {
-//         if (project){
-//           res.json({message: 'that project already exists'});
-//         } else {
-//           let proj = new Project({projectName: projectName});
-//           console.log(proj);
-//           proj.save()
-//             .then( (x) => {
-//                 let response = {
-//                   message: `${proj} created`,
-//                   _id: x._id
-//                 }
-//                 console.log(response);
-//                 res.json(response);
-//             })
-          
-//           .catch(err=>{
-//             console.log(err);
-//             res.send(err);
-//           })
-          
-//         }
-//       })
       .catch(err => console.log(err));
   }
   
 //Will search for a matching project. If none found, return an error message. If found, delete and update page
   this.deleteProject = function(req, res){
-    const id = req.params.project.toString();
-    Project.findByIdAndDelete(id, (proj, err)=>{
+    const name = req.params.project.toString();
+    Project.findOneAndDelete({projectName: name}, (proj, err)=>{
       if (err){
         res.send(err);
       } else{

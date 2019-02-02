@@ -11,6 +11,7 @@
           this.list = res.projects.map(project => [project.projectName, project._id, project.issues]);
           return;
         })
+        .then(dom.init)
         .catch(function(err) {
           throw new Error('oops something went wrong');
         });
@@ -28,8 +29,17 @@
 
             return res;
           })
-        .catch(err => {console.log(err)});
+        .catch(err => console.log(err));
       
+    },
+    
+    deleteProject: function(projectName){
+      return fetch(`/api/projects/${projectName}`, {
+        method: 'DELETE',
+        body: JSON.stringify({projectName}),
+        headers: {'Content-Type': 'application/json'}
+      })
+      .catch(err => console.log(err));
     }
     
   };//end projects  
@@ -46,7 +56,6 @@
 
         linkWrapper.setAttribute('href', `/${projects.list[i][0]}`);
         projDiv.setAttribute('class', 'projectDiv');
-        console.log(projects.list[i][2]);
         projTitle.innerText = projects.list[i][0];
         
         let count =  projects.list[i][2].length;       
@@ -58,18 +67,33 @@
 
         document.getElementById('main').appendChild(linkWrapper);
       }
-      //Form Handling
-      const submitButton = document.getElementById('submitProject');
-      let formInput = document.getElementById('projectName');
-      submitButton.addEventListener('click', (e)=>{
+      
+    /* ********FORM HANDLING******** */
+      
+      //POST
+      const formPOST = {
+        submitButton: document.getElementById('addProjectButton'),
+        formInput: document.getElementById('projectNamePost')
+      }
+      formPOST.submitButton.addEventListener('click', (e)=>{
         e.preventDefault();
-        projects.addProject(formInput.value);
-        formInput.value = '';
+        projects.addProject(formPOST.formInput.value);
+        formPOST.formInput.value = '';
+      });
+      
+      //DELETE
+      const formDELETE = {
+        submitButton: document.getElementById('deleteProjectButton'),
+        formInput: document.getElementById('projectNameDelete')
+      }
+      formDELETE.submitButton.addEventListener('click', (e)=>{
+        console.log(formDELETE.formInput.value);
+        e.preventDefault();
+        projects.deleteProject(formDELETE.formInput.value);
+        formDELETE.formInput.value = '';
       });
     }
   }//end dom
   projects.init();
-  //TODO: Find way to invoke this function after fetch
-  setTimeout(function(){dom.init();}, 2000);
 
 })()// end iife

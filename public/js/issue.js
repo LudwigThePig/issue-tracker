@@ -10,9 +10,8 @@
         })
         .then(res => {
         // issueTitle, description, name, assign, status, dateCreated, dateUpdated, open, project
-
           this.list = res; 
-          console.log(this.list);
+          dom.init()
           return;
         })
         .catch(function(err) {
@@ -130,7 +129,5 @@
     }
   }//end dom
   issues.init();
-  //TODO: Find way to invoke this function after fetch
-  setTimeout(function(){dom.init();}, 1000);
 
 })()// end iife

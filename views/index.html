@@ -13,14 +13,25 @@
   <div id="header">
     <h1>Project Issue Tracker</h1>
   </div>
-    <div id="addProject">
-      <form action="api/projects" method="POST">
-        <input type="text" required="" id="projectName">
-        <button type="submit" id="submitProject">Add Project</button>
-      </form> 
-    </div>
+    
   <div id="main">
   </div>
+    
+    <div id="addProject">
+      <p>Add a Project</p>
+      <form action="api/projects" method="POST">
+        <input type="text" required="" id="projectNamePost">
+        <button type="submit" id="addProjectButton">Add Project</button>
+      </form> 
+    </div>
+    
+    <div id="deleteProject">
+      <p>Delete a Project</p>
+      <form action="api/projects" method="DELETE">
+        <input type="text" required="" id="projectNameDelete">
+        <button type="submit" id="deleteProjectButton">ProjectName</button>
+      </form> 
+    </div>
     <!-- Your web-app is https, so your scripts need to be too -->
   <script src="/public/js/index.js"></script>
   </body>
