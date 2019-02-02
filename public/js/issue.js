@@ -22,7 +22,7 @@
       
       return fetch(`/api/issues/${projName}`, {
         method: 'POST',
-        body: `${issue}`,
+        body: issue,
         headers: {'Content-Type': 'application/json'}
       })
         .then((data) => {return data.json()})
@@ -31,8 +31,15 @@
 
             return res;
           })
-        .catch(err => {console.log(err + issue)});
+        .catch(err => console.log(err + issue));
       
+    },
+    deleteIssue: function(id){
+      return fetch(`/api/issues/${id}`, {
+        method: 'DELETE',
+      })
+      .then((data)=>{return data.json()})
+      .catch(err => console.log(err + id))
     }
     
   };//end issues  
@@ -66,18 +73,22 @@
         const updated = document.createElement('span');
         const status = document.createElement('span');
         const open = document.createElement('open');
+        const id = document.createElement('span')
+        
 
         issueDiv.setAttribute('class', 'issueDiv');
         created.setAttribute('class', 'date');
         updated.setAttribute('class', 'date');
         status.setAttribute('class', 'status');
         open.setAttribute('class', 'status');
+        id.setAttribute('class', 'issueId');
         
         issueTitle.innerText = issues.list[i].issueTitle;
         author.innerText = issues.list[i].name;
         description.innerText = issues.list[i].description;
-        created.innerText = issues.list[i].dateCreated.slice(0, 15);
-        updated.innerText = issues.list[i].dateUpdated.slice(0, 12);
+        created.innerText = `Created: ${issues.list[i].dateCreated.slice(3, 12)}`;
+        updated.innerText = `Last Updated: ${issues.list[i].dateUpdated.slice(3, 12)}`;
+        id.innerText = `id: ${issues.list[i]._id}`;
         
         if (issues.list[i].open){
           open.innerText = "Open";
@@ -91,9 +102,14 @@
         issueDiv.appendChild(description);
         issueDiv.appendChild(author);
         issueDiv.appendChild(created);
+        issueDiv.appendChild(document.createElement('br'));
         issueDiv.appendChild(updated);
+        issueDiv.appendChild(document.createElement('br'));
         issueDiv.appendChild(status);
+        issueDiv.appendChild(document.createElement('br'));
         issueDiv.appendChild(open);
+        issueDiv.appendChild(document.createElement('br'));
+        issueDiv.appendChild(id);
 
         document.getElementById('issues').appendChild(issueDiv);
       }
@@ -102,7 +118,7 @@
       
       //POST
       const form = document.getElementById('submitIssue')
-      const submitButton = document.getElementById('buttonPOST');
+      const submitButtonPOST = document.getElementById('buttonPOST');
       let formInput = {
         title: document.getElementsByName('issue_title')[0],
         description: document.getElementsByName('issue_text')[0],
@@ -110,9 +126,9 @@
         assignedTo: document.getElementsByName('assigned_to')[0],
         statusText: document.getElementsByName('status_text')[0]
       }
-      document.querySelector('submitIssue');
-      submitButton.addEventListener('click', (e)=>{
-        console.log(formInput.title.value + typeof(formInput.title.value))
+      //document.querySelector('submitIssue');
+      
+      submitButtonPOST.addEventListener('click', (e)=>{
         e.preventDefault();                
         const json = {
             "issueTitle": formInput.title.value,
@@ -131,6 +147,19 @@
         
         location.reload();        
       });
+      
+      //DELETE
+      const issueId = document.getElementsByName('_id')[1];
+      const submitButtonDELETE = document.getElementById('buttonDELETE');
+      
+      submitButtonDELETE.addEventListener('click', (e)=>{
+        e.preventDefault();
+        issues.deleteIssue(issueId.value);
+        issueId.value = '';
+        
+        location.reload();
+      })
+      
     }
   }//end dom
   issues.init();

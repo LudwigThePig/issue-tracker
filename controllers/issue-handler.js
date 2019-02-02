@@ -47,8 +47,12 @@ function IssueHandler(){
   //Not exactly sure what to do....
   
   this.deleteIssues = function(req, res){
-    res.send('we made it to controller/issue-handler deleteIssues')
-  };;
+    const issueId = req.params.project;
+    console.log(issueId);
+    Issue.findByIdAndDelete({_id: issueId})
+      .then( response => res.json({response}) )
+      .catch( err => console.log(err) );
+  };
   //Finds issue by id. If issue is not present, return err. If present, delete
 
 }
