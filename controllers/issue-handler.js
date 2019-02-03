@@ -39,12 +39,23 @@ function IssueHandler(){
     .catch( (err)=>{ console.log(err); } );
 
   };
-  //find the project. If project does not exist, prompt the user to create project. If project does exist, post to that project
   
   this.putIssues = function(req, res){
-    res.send('we made it to controller/issue-handler putIssues')
+    
+    const id = req.body.id;
+    const request = req.body;
+    let update = {};
+    
+    //Prunes the request body of any empty form fields. So, we won't 'delete' fields
+    Object.keys(request).forEach( field => {
+      if (request[field] != ''){
+        update[field] = request[field];
+      }
+    });    
+    
+    console.log(update);
+    Issue.findByIdAndUpdate(id);
   };;
-  //Not exactly sure what to do....
   
   this.deleteIssues = function(req, res){
     const issueId = req.params.project;
@@ -53,7 +64,6 @@ function IssueHandler(){
       .then( response => res.json({response}) )
       .catch( err => console.log(err) );
   };
-  //Finds issue by id. If issue is not present, return err. If present, delete
 
 }
 
