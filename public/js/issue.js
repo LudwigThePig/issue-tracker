@@ -154,10 +154,10 @@
       });
       
       //PUT
-      const putId = document.getElementsByName('_id')[0];
       const submitButtonPUT = document.getElementById('buttonPUT');
       
       const updateForm = {
+        id: document.getElementsByName('_id')[0],
         title: document.getElementsByName('issue_title')[1],
         description: document.getElementsByName('issue_text')[1],
         createdBy: document.getElementsByName('created_by')[1],
@@ -182,6 +182,7 @@
       submitButtonPUT.addEventListener('click', (e)=>{
         e.preventDefault;
         const json = {
+            "id": updateForm.id.value,
             "issueTitle": updateForm.title.value,
             "description": updateForm.description.value,
             "name": updateForm.createdBy.value,

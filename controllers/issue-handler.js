@@ -46,14 +46,16 @@ function IssueHandler(){
     const request = req.body;
     let update = {};
     
-    //Prunes the request body of any empty form fields. So, we won't 'delete' fields
-    Object.keys(request).forEach( field => {
+    //Prunes the request body of any empty form fields. Slice is removing the id key
+    Object.keys(request).slice(1).forEach( field => {
       if (request[field] != ''){
         update[field] = request[field];
       }
-    });    
-    
-    console.log(update);
+    });
+    if (update.open == 'closed'){
+      update.open = false;
+    }
+    console.log(update)
     Issue.findByIdAndUpdate(id);
   };;
   
