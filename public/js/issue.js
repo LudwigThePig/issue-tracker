@@ -25,21 +25,31 @@
         body: issue,
         headers: {'Content-Type': 'application/json'}
       })
-        .then((data) => {return data.json()})
+        .then( (data) => {return data.json();} )
         .then((res)=>{
             this.list.push({issue})
 
             return res;
           })
-        .catch(err => console.log(err + issue));
-      
+        .catch( err => console.log(err) );
     },
+    
+    updateIssue: function(update){
+      return fetch(`/api/issues/${projName}`,{
+        method: 'PUT',
+        body: update,
+        header: {'Content-Type': 'application/json'}
+      })
+        .then( (data)=>{return data.json();} )
+        .catch( err => console.log(err) );
+    },
+    
     deleteIssue: function(id){
       return fetch(`/api/issues/${id}`, {
         method: 'DELETE',
       })
-      .then((data)=>{return data.json()})
-      .catch(err => console.log(err + id))
+      .then( (data)=>{return data.json();} )
+      .catch( err => console.log(err) );
     }
     
   };//end issues  
@@ -119,7 +129,7 @@
       //POST
       const form = document.getElementById('submitIssue')
       const submitButtonPOST = document.getElementById('buttonPOST');
-      let formInput = {
+      let postForm = {
         title: document.getElementsByName('issue_title')[0],
         description: document.getElementsByName('issue_text')[0],
         createdBy: document.getElementsByName('created_by')[0],
@@ -131,34 +141,60 @@
       submitButtonPOST.addEventListener('click', (e)=>{
         e.preventDefault();                
         const json = {
-            "issueTitle": formInput.title.value,
-            "description": formInput.description.value,
-            "name": formInput.createdBy.value,
-            "assign": formInput.assignedTo.value,
-            "status": formInput.statusText.value
-        };        
+            "issueTitle": postForm.title.value,
+            "description": postForm.description.value,
+            "name": postForm.createdBy.value,
+            "assign": postForm.assignedTo.value,
+            "status": postForm.statusText.value
+        };
+        
         issues.addIssue(JSON.stringify(json));
         
-        formInput.title.value = '';
-        formInput.description.value = '';
-        formInput.createdBy.value = '';
-        formInput.assignedTo.value = '';
-        formInput.statusText.value = '';
-        
+        Object.keys(postForm).forEach(i => postForm[i].value = '');
         location.reload();        
       });
       
+      //PUT
+      const putId = document.getElementsByName('_id')[0];
+      const submitButtonPUT = document.getElementById('buttonPUT');
+      
+      const updateForm = {
+        title: document.getElementsByName('issue_title')[1],
+        description: document.getElementsByName('issue_text')[1],
+        createdBy: document.getElementsByName('created_by')[1],
+        assignedTo: document.getElementsByName('assigned_to')[1],
+        statusText: document.getElementsByName('status_text')[1],
+        open: document.getElementsByName('open')[0]
+      };
+      
+      submitButtonPUT.addEventListener('click', (e)=>{
+        const json = {
+            "issueTitle": updateForm.title.value,
+            "description": updateForm.description.value,
+            "name": updateForm.createdBy.value,
+            "assign": updateForm.assignedTo.value,
+            "status": updateForm.statusText.value,
+            "open": updateForm.open.value
+        };
+        
+        issues.updateIssue(JSON.stringify(json));
+        
+        Object.keys(updateForm).forEach(i => updateForm[i].value = '');
+        location.reload();
+      });
+
+      
       //DELETE
-      const issueId = document.getElementsByName('_id')[1];
+      const deleteId = document.getElementsByName('_id')[1];
       const submitButtonDELETE = document.getElementById('buttonDELETE');
       
       submitButtonDELETE.addEventListener('click', (e)=>{
         e.preventDefault();
-        issues.deleteIssue(issueId.value);
-        issueId.value = '';
+        issues.deleteIssue(deleteId.value);
+        deleteId.value = '';
         
         location.reload();
-      })
+      });
       
     }
   }//end dom
