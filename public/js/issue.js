@@ -3,6 +3,7 @@
   //fetch issues and store in list
   let issues = {  
     list: [],
+    
     init: function(){ //Gets issues for the project
       return fetch(`/api/issues/${projName}`)
         .then(function(res) {
@@ -18,8 +19,8 @@
           throw new Error('oops something went wrong' + err);
         });
     },
+    
     addIssue: function(issue){
-      
       return fetch(`/api/issues/${projName}`, {
         method: 'POST',
         body: issue,
@@ -38,7 +39,7 @@
       return fetch(`/api/issues/${projName}`,{
         method: 'PUT',
         body: update,
-        header: {'Content-Type': 'application/json'}
+        headers: {'Content-Type': 'application/json'}
       })
         .then( (data)=>{return data.json();} )
         .catch( err => console.log(err) );
@@ -74,7 +75,6 @@
       
       //Rendering
       for (let i = 0; i < issues.list.length; i++){
-        console.log(issues.list);
         const issueDiv = document.createElement('div');
         const issueTitle = document.createElement('h2');
         const author = document.createElement('p');
@@ -136,7 +136,6 @@
         assignedTo: document.getElementsByName('assigned_to')[0],
         statusText: document.getElementsByName('status_text')[0]
       }
-      //document.querySelector('submitIssue');
       
       submitButtonPOST.addEventListener('click', (e)=>{
         e.preventDefault();                
@@ -164,17 +163,31 @@
         createdBy: document.getElementsByName('created_by')[1],
         assignedTo: document.getElementsByName('assigned_to')[1],
         statusText: document.getElementsByName('status_text')[1],
-        open: document.getElementsByName('open')[0]
+        open: ''
       };
       
+      //handles checkbox value and updates updateForm object
+      const checkbox = document.getElementById('updateOpen')
+      checkbox.addEventListener('click', ()=>{
+        if (checkbox.value !== 'open'){
+          checkbox.value = 'closed';
+          updateForm.open = 'closed';
+        } else {
+          checkbox.value = 'open';
+          updateForm.open = '';
+        }
+      });
+      
+      
       submitButtonPUT.addEventListener('click', (e)=>{
+        e.preventDefault;
         const json = {
             "issueTitle": updateForm.title.value,
             "description": updateForm.description.value,
             "name": updateForm.createdBy.value,
             "assign": updateForm.assignedTo.value,
             "status": updateForm.statusText.value,
-            "open": updateForm.open.value
+            "open": updateForm.open
         };
         
         issues.updateIssue(JSON.stringify(json));
