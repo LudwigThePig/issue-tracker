@@ -56,7 +56,8 @@ function IssueHandler(){
       update.open = false;
     }
     console.log(update)
-    Issue.findByIdAndUpdate(id);
+    Issue.findOneAndUpdate({_id: id}, update)
+      .catch(err => console.log(err));
   };;
   
   this.deleteIssues = function(req, res){
