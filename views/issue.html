@@ -20,10 +20,11 @@
         
       </div>
       
+      <h3 style="color: red; font-weight: bold; text-align: left">Click on an issue to update or delete it</h3>
+
       <div id="forms">
-        
         <div> 
-          <h3>Submit issue on <span class="name"></span></h3>
+          <h3>Submit Issue</h3>
           <form id="submitIssue" class="border">
             <input type="text" name="issue_title" placeholder="*Title" style="width: 100px" required=''><br>
             <textarea type="text" name="issue_text" placeholder="*Text" style="width: 100px" required=''></textarea><br>
@@ -35,7 +36,7 @@
         </div>
         
         <div>
-          <h3>Update issue on <span class="name"></span> (Change any or all to update issue on the _id supplied)</h3>
+          <h3>Update Issue</h3>
           <form id="updateIssue" class="border">
             <input type="text" name="_id" placeholder="*_id" style="width: 100px" required=''><br>
             <input type="text" name="issue_title" placeholder="(opt)Title" style="width: 100px"><br>
@@ -49,7 +50,7 @@
         </div>
         
         <div> 
-          <h3>Delete issue on <span class="name"></span></h3>
+          <h3>Delete Issue</h3>
           <form id="deleteIssue" class="border">
             <input type="text" name="_id" placeholder="_id" style="width: 100px" required=''><br>
             <button id="buttonDELETE" type="submit">Delete Issue</button>

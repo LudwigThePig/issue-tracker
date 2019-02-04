@@ -23,22 +23,27 @@ background: #454851;
 }
 
 #issues{
-  
   margin: 15px 0 0 0;
   width: 100vw;
   color: #23232;
   
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   grid-gap: 10px;
 }
 
 .issueDiv{
   background: #343434;
-  width: 18vw;
+  width: 23vw;
 }
-.projectDiv:hover{
+.issueId{
+  font-size: .7em;
+  color: #DF7500;
+}
+
+.issueDiv:hover{
   box-shadow: 0px 0px 3px 3px;
+  cursor: pointer;
 }
 
 #forms{

@@ -57,22 +57,7 @@
   
   
   const dom = {
-    init: function(){
-      
-      /*
-      assign: "k"
-      dateCreated: "Thu Jan 31 2019 21:02:53 GMT+0000 (Coordinated Universal Time)"
-      dateUpdated: "Thu Jan 31 2019 21:02:53 GMT+0000 (Coordinated Universal Time)"
-      description: "k"
-      issueTitle: "k"
-      name: "k"
-      open: true
-      project: "okay"
-      status: "k"
-      __v: 0
-      _id: "5c53627da413512caa199645"
-      */
-      
+    init: function(){      
       //Rendering
       for (let i = 0; i < issues.list.length; i++){
         const issueDiv = document.createElement('div');
@@ -87,6 +72,7 @@
         
 
         issueDiv.setAttribute('class', 'issueDiv');
+        issueDiv.setAttribute('onclick', `relayId('${issues.list[i]._id}')`)
         created.setAttribute('class', 'date');
         updated.setAttribute('class', 'date');
         status.setAttribute('class', 'status');
@@ -210,8 +196,16 @@
         location.reload();
       });
       
+    //OTHER EVENT HANDLERS
+
     }
   }//end dom
+  
+  
   issues.init();
 
 })()// end iife
+
+  const relayId = (val)=>{
+    document.getElementsByName('_id').forEach(i => i.value = val);
+  }
