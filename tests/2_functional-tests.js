@@ -1,109 +1,77 @@
-/*
-*
-*
-*       FILL IN EACH FUNCTIONAL TEST BELOW COMPLETELY
-*       -----[Keep the tests in the same order!]-----
-*       (if additional are added, keep them at the very end!)
-*/
+const Project = require('../models/project');
 
-var chaiHttp = require('chai-http');
-var chai = require('chai');
-var assert = chai.assert;
-var server = require('../server');
-
-chai.use(chaiHttp);
-
-suite('Functional Tests', function() {
+function ProjectHandler(){
   
-    suite('POST /api/issues/{project} => object with issue data', function() {
+  this.getAllProjects = function(req, res){
+    Project.find({}, (err, projects)=>{
+      if (err){
+        res.send({error: err});
+        console.log(err);
+      } else {
+        res.json({projects: projects});
+      }
+    })
+  };
+  
+  
+  //Will serach for one project, get all associated issues (via populate()), then return JSON. If none present, return ...
+  this.getOneProject = function(req, res){
+    const id = req.params.project.toString();
+    Project.findById(id)
+      .populate('issues')
+      .exec( (err, project) => {
+        if (err){ 
+          res.send(err);
+        } else { 
+          res.json(project);
+        }
+      });          
+  };
+  
+//Will search for a matching project. If match is found, direct them to project. If none is found, it will add it to the database
+  this.postProject = function(req, res){
+    const projectName = req.body.projectName.toString();
+    Project.findOne({projectName: projectName}, function(err, project){
+      if (err){console.log(err)};
       
-      test('Every field filled in', function(done) {
-       chai.request(server)
-        .post('/api/issues/test')
-        .send({
-          issue_title: 'Title',
-          issue_text: 'text',
-          created_by: 'Functional Test - Every field filled in',
-          assigned_to: 'Chai and Mocha',
-          status_text: 'In QA'
-        })
-        .end(function(err, res){
-          assert.equal(res.status, 200);
-          
-          //fill me in too!
-          
-          done();
-        });
-      });
-      
-      test('Required fields filled in', function(done) {
+      if (project){
+        res.json({message: 'that project already exists'});
+      } else {
+        let proj = new Project({projectName: projectName});
+        proj.save()
+          .then( (x) => {
+              let response = {
+                message: `${proj} created`,
+                _id: x._id
+              }
+              console.log(response);
+              res.json(response);
+          })
+    }})
+      .catch(err => console.log(err));
+  }
+  
+//Will search for a matching project. If none found, return an error message. If found, delete and update page
+  this.deleteProject = function(req, res){
+    const name = req.params.project.toString();
+    Project.findOneAndDelete({projectName: name}, (proj, err)=>{
+      if (err){
+        res.send(err);
+      } else{
         
-      });
-      
-      test('Missing required fields', function(done) {
+        let response;
         
-      });
-      
-    });
-    
-    suite('PUT /api/issues/{project} => text', function() {
-      
-      test('No body', function(done) {
-        
-      });
-      
-      test('One field to update', function(done) {
-        
-      });
-      
-      test('Multiple fields to update', function(done) {
-        
-      });
-      
-    });
-    
-    suite('GET /api/issues/{project} => Array of objects with issue data', function() {
-      
-      test('No filter', function(done) {
-        chai.request(server)
-        .get('/api/issues/test')
-        .query({})
-        .end(function(err, res){
-          assert.equal(res.status, 200);
-          assert.isArray(res.body);
-          assert.property(res.body[0], 'issue_title');
-          assert.property(res.body[0], 'issue_text');
-          assert.property(res.body[0], 'created_on');
-          assert.property(res.body[0], 'updated_on');
-          assert.property(res.body[0], 'created_by');
-          assert.property(res.body[0], 'assigned_to');
-          assert.property(res.body[0], 'open');
-          assert.property(res.body[0], 'status_text');
-          assert.property(res.body[0], '_id');
-          done();
-        });
-      });
-      
-      test('One filter', function(done) {
-        
-      });
-      
-      test('Multiple filters (test for multiple fields you know will be in the db for a return)', function(done) {
-        
-      });
-      
-    });
-    
-    suite('DELETE /api/issues/{project} => text', function() {
-      
-      test('No _id', function(done) {
-        
-      });
-      
-      test('Valid _id', function(done) {
-        
-      });
-      
-    });
+        if (proj){
+          response = `${proj} had been deleted`;
+        } else {
+          response = `Could not find and delete ${proj}`;
+        }
+        res.json({response});
+      }
+    })
+  };;
+  
 
-});
+}
+
+module.exports = ProjectHandler;

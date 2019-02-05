@@ -44,7 +44,9 @@ function IssueHandler(){
     
     const id = req.body.id;
     const request = req.body;
-    let update = {};
+    let update = {
+      "dateUpdated": new Date(),
+    };
     
     //Prunes the request body of any empty form fields. Slice is removing the id key
     Object.keys(request).slice(1).forEach( field => {
@@ -55,7 +57,6 @@ function IssueHandler(){
     if (update.open == 'closed'){
       update.open = false;
     }
-    console.log(update)
     Issue.findOneAndUpdate({_id: id}, update)
       .catch(err => console.log(err));
   };;
