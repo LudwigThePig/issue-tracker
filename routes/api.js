@@ -9,16 +9,8 @@ const Projects = require('../controller/project-handler.js');
 const issues = new Issues;
 const projects = new Projects;
 
-const CONNECTION_STRING = process.env.MONGO; //MongoClient.connect(CONNECTION_STRING, function(err, db) {});
 
-module.exports = function (app) {
-  // MongoClient.connect(process.env.MONGO, (err)=>{
-  //   if (err){
-  //     console.log(`Ooops, looks like something went wrong: ${err}`);
-  //   } else {
-  //     console.log(`You are now connected to the database!`)
-  //   }
-  // });
+module.exports = function (app) { 
 
   app.route('/api/issues/:project')
   
